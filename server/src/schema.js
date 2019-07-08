@@ -1,4 +1,6 @@
-export const typeDefs = `
+import { gql } from 'apollo-server-express'
+
+export const typeDefs = gql`
     type Contact {
         id: ID!
         firstName: String
