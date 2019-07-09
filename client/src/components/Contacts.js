@@ -1,6 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo';
+import { Link } from 'react-router-dom'
 
 export const contactsListQuery = gql`
     query ContactsQuery {
@@ -14,7 +15,6 @@ export const contactsListQuery = gql`
 
 const Contacts = ({ data: { loading, error, contacts} }) => 
 {
-    console.log("contact refreshed...")
     if (loading) {
         return <p>Loading...</p>
     }
@@ -25,7 +25,7 @@ const Contacts = ({ data: { loading, error, contacts} }) =>
         <ul>
             { 
                 contacts.map ( item => 
-                    (<li key={item.id}>{item.firstName} {item.lastName}</li>)
+                    (<li key={item.id}><Link to={item.id < 0 ? '/': `contact/${item.id}`}>{item.firstName} {item.lastName}</Link></li>)
                 ) 
             }
         </ul>

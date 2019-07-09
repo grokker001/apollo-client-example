@@ -1,4 +1,5 @@
 import express from 'express'
+import http from 'http'
 import { ApolloServer } from 'apollo-server-express'
 import typeDefs from './src/schema'
 import resolvers from './src/resolvers'
@@ -15,8 +16,12 @@ const server = new ApolloServer({
     resolvers
 })
 
-server.applyMiddleware({ app, path: '/graphql' })
+server.applyMiddleware({ app })
 
-app.listen(PORT, () => {
-    console.log(`Start server at port: ${PORT}`)
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer)
+
+httpServer.listen(PORT, () => {
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+    console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
 })
